@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #00ffe7;
+  --color-accent: #00ff88;
+  --color-surface: #1a1a2e;
+  --color-surface-light: #16213e;
+  --color-background: #000000;
+  --color-text: #e0e0e0;
+  --color-text-muted: #a0a0a0;
+
+  --font-heading: "Orbitron", sans-serif;
+  --font-mono: "Roboto Mono", monospace;
+  --font-body: "Poppins", sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-background);
+  color: var(--color-text);
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Keyboard focus outlines */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}

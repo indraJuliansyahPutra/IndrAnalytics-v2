@@ -1,0 +1,83 @@
+---
+import { timeline } from "../data/education";
+import type { TimelineEntry } from "../data/types";
+
+const iconMap: Record<TimelineEntry["icon"], string> = {
+  graduation: "fas fa-graduation-cap",
+  course: "fas fa-laptop-code",
+  lab: "fas fa-microscope",
+  organization: "fas fa-users",
+};
+---
+
+<section id="education" class="px-6 py-20 md:px-12">
+  <h2
+    class="mb-12 text-center font-heading text-3xl font-bold text-primary md:text-4xl"
+  >
+    Education and Experiences
+  </h2>
+
+  <div class="relative mx-auto max-w-4xl">
+    <!-- Vertical line -->
+    <div
+      class="absolute left-4 top-0 hidden h-full w-0.5 bg-primary/30 md:left-1/2 md:block md:-translate-x-1/2"
+    >
+    </div>
+
+    {
+      timeline.map((entry, i) => (
+        <div class="relative mb-12 flex flex-col gap-4 md:flex-row md:items-start">
+          {/* Center dot — absolutely positioned on the vertical line */}
+          <div class="absolute left-1/2 top-6 hidden h-3 w-3 -translate-x-1/2 rounded-full bg-primary shadow-[0_0_8px_var(--color-primary)] md:block" />
+
+          {/* Left column */}
+          <div
+            class={`md:w-1/2 ${i % 2 === 0 ? "md:pr-10 md:text-right" : "md:order-2 md:pl-10"}`}
+          >
+            <div class="rounded-xl border border-primary/20 bg-surface p-6">
+              <i
+                class={`${iconMap[entry.icon]} mb-3 text-2xl text-accent`}
+              />
+              <h3 class="font-heading text-lg font-bold text-primary">
+                {entry.title}
+              </h3>
+              <p class="mt-1 text-sm text-text-muted">{entry.organization}</p>
+              <p class="text-sm text-text-muted">{entry.period}</p>
+              {entry.score && (
+                <p class="mt-1 text-sm font-medium text-accent">
+                  {entry.score}
+                </p>
+              )}
+              {entry.certificateUrl && (
+                <a
+                  href={entry.certificateUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="mt-3 inline-block rounded border border-primary px-3 py-1 text-xs text-primary transition-shadow hover:shadow-[0_0_10px_var(--color-primary)]"
+                >
+                  View Certificate
+                </a>
+              )}
+            </div>
+          </div>
+
+          {/* Right column */}
+          <div
+            class={`md:w-1/2 ${i % 2 === 0 ? "md:pl-10" : "md:order-1 md:pr-10 md:text-right"}`}
+          >
+            <ul class="space-y-2 text-sm leading-relaxed text-text-muted">
+              {entry.highlights.map((h) => (
+                <li
+                  class={`flex items-start gap-2 md:gap-3 ${i % 2 !== 0 ? "md:flex-row-reverse md:text-right" : ""}`}
+                >
+                  <span class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+                  <span>{h}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</section>

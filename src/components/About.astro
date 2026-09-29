@@ -1,0 +1,84 @@
+---
+import { personal } from "../data/personal";
+
+const highlightWords = [
+  "Computer Science",
+  "Universitas Sriwijaya",
+  "3.91",
+  "data analysis",
+  "machine learning",
+  "artificial intelligence",
+  "Python",
+  "TensorFlow",
+  "PyTorch",
+  "SQL",
+  "Computer Vision",
+  "AI models",
+  "image classification",
+  "CNN",
+  "ASL hand gesture detection",
+  "YOLOv8",
+  "TensorFlow Developer",
+  "Distinction Graduate",
+  "Bangkit Academy's Machine Learning Path",
+  "Data Analyst",
+  "Data Scientist",
+  "Machine Learning Engineer",
+  "AI-driven solutions",
+];
+
+function highlightBio(bio: string, words: string[]): string {
+  let result = bio;
+  for (const word of words) {
+    result = result.replace(
+      new RegExp(`(${word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`, "g"),
+      `<span class="text-primary font-medium">$1</span>`
+    );
+  }
+  return result;
+}
+
+const highlightedBio = highlightBio(personal.bio, highlightWords);
+---
+
+<section id="about" class="px-6 py-20 md:px-12">
+  <h2
+    class="mb-12 text-center font-heading text-3xl font-bold text-primary md:text-4xl"
+  >
+    About Me
+  </h2>
+  <div
+    class="mx-auto flex max-w-5xl flex-col items-center gap-10 md:flex-row md:items-start"
+  >
+    <div class="shrink-0">
+      <img
+        src={personal.profileImage}
+        alt={`${personal.name} profile photo`}
+        class="h-64 w-64 rounded-full border-4 border-primary object-cover shadow-[0_0_20px_var(--color-primary)]"
+        loading="lazy"
+      />
+    </div>
+    <div>
+      <p
+        class="leading-relaxed text-text"
+        set:html={highlightedBio}
+      />
+      <div class="mt-8 flex flex-wrap gap-4">
+        <a
+          href="#contact"
+          class="rounded-md bg-primary px-6 py-3 font-semibold text-black transition-shadow hover:shadow-[0_0_15px_var(--color-primary)]"
+        >
+          Hire Me
+        </a>
+        <a
+          href={personal.cvPath}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="rounded-md border-2 border-primary px-6 py-3 font-semibold text-primary transition-shadow hover:shadow-[0_0_15px_var(--color-primary)]"
+        >
+          Download CV
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

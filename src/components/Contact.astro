@@ -1,0 +1,79 @@
+---
+import { personal } from "../data/personal";
+
+const professionalLinks = personal.social.filter(
+  (s) => s.category === "professional"
+);
+const personalLinks = personal.social.filter((s) => s.category === "personal");
+---
+
+<section id="contact" class="px-6 py-20 md:px-12">
+  <h2
+    class="mb-12 text-center font-heading text-3xl font-bold text-primary md:text-4xl"
+  >
+    Contact Me
+  </h2>
+
+  <div class="mx-auto max-w-xl space-y-6 text-center">
+    <div class="flex items-center justify-center gap-3">
+      <i class="fas fa-envelope text-lg text-primary"></i>
+      <a
+        href={`mailto:${personal.contact.email}`}
+        class="text-text transition-colors hover:text-primary"
+      >
+        {personal.contact.email}
+      </a>
+    </div>
+
+    <div class="flex items-center justify-center gap-3">
+      <i class="fas fa-phone text-lg text-primary"></i>
+      <a
+        href={personal.contact.whatsapp}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-text transition-colors hover:text-primary"
+      >
+        {personal.contact.phone}
+      </a>
+    </div>
+
+    <div class="flex items-center justify-center gap-3">
+      <i class="fas fa-map-marker-alt text-lg text-primary"></i>
+      <p class="text-text">{personal.contact.location}</p>
+    </div>
+
+    <!-- Professional -->
+    <div class="flex justify-center gap-5 pt-4">
+      {
+        professionalLinks.map((link) => (
+          <a
+            href={link.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={link.platform}
+            class="text-2xl text-primary transition-all hover:text-accent hover:[text-shadow:0_0_10px_var(--color-accent)]"
+          >
+            <i class={link.icon} />
+          </a>
+        ))
+      }
+    </div>
+
+    <!-- Personal -->
+    <div class="flex justify-center gap-5">
+      {
+        personalLinks.map((link) => (
+          <a
+            href={link.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={link.platform}
+            class="text-2xl text-primary transition-all hover:text-accent hover:[text-shadow:0_0_10px_var(--color-accent)]"
+          >
+            <i class={link.icon} />
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</section>

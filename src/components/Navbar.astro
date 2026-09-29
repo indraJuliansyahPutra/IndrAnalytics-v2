@@ -1,0 +1,83 @@
+---
+import { navigation } from "../data/navigation";
+---
+
+<nav
+  aria-label="Main navigation"
+  class="fixed top-0 z-50 flex w-full items-center justify-between bg-black/60 px-6 py-4 backdrop-blur-md md:px-12"
+>
+  <a href="#home" class="shrink-0">
+    <img src="/images/logo.png" alt="IJUL Logo" class="h-10 w-auto" />
+  </a>
+
+  <button
+    id="menu-toggle"
+    class="text-3xl text-primary md:hidden"
+    aria-label="Toggle navigation menu"
+    aria-expanded="false"
+  >
+    <i class="fas fa-bars"></i>
+  </button>
+
+  <ul
+    id="nav-links"
+    class="fixed inset-x-0 top-[72px] hidden flex-col items-center gap-6 bg-black/90 py-6 backdrop-blur-md md:static md:flex md:flex-row md:gap-8 md:bg-transparent md:py-0 md:backdrop-blur-none"
+  >
+    {
+      navigation.map((item) => (
+        <li>
+          <a
+            href={item.href}
+            class="nav-link text-lg text-primary transition-colors duration-300 hover:text-accent hover:[text-shadow:0_0_10px_var(--color-accent)]"
+            data-section={item.href.replace("#", "")}
+          >
+            {item.label}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>
+
+<script>
+  const toggle = document.getElementById("menu-toggle");
+  const nav = document.getElementById("nav-links");
+  if (toggle && nav) {
+    toggle.addEventListener("click", () => {
+      const isOpen = !nav.classList.contains("hidden");
+      nav.classList.toggle("hidden");
+      nav.classList.toggle("flex");
+      toggle.setAttribute("aria-expanded", String(!isOpen));
+    });
+    nav.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        nav.classList.add("hidden");
+        nav.classList.remove("flex");
+        toggle.setAttribute("aria-expanded", "false");
+      });
+    });
+  }
+
+  // Active link highlighting + URL hash tracking
+  const navLinks = document.querySelectorAll<HTMLAnchorElement>(".nav-link");
+  const sections = document.querySelectorAll<HTMLElement>("section[id]");
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.id;
+          history.replaceState(null, "", `#${id}`);
+          navLinks.forEach((link) => {
+            const isActive = link.dataset.section === id;
+            link.classList.toggle("text-accent", isActive);
+            link.classList.toggle("[text-shadow:0_0_10px_var(--color-accent)]", isActive);
+          });
+        }
+      });
+    },
+    { rootMargin: "0px", threshold: 0.35 }
+  );
+
+  sections.forEach((s) => observer.observe(s));
+</script>

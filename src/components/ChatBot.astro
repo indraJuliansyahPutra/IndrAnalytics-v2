@@ -1,0 +1,116 @@
+---
+
+---
+
+<button
+  id="chat-toggle"
+  class="fixed bottom-6 right-20 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-primary text-xl text-black shadow-lg transition-all hover:shadow-[0_0_15px_var(--color-primary)]"
+  aria-label="Open chat"
+>
+  <i class="fas fa-comment-dots"></i>
+</button>
+
+<div
+  id="chat-widget"
+  class="fixed bottom-20 right-6 z-50 hidden w-80 overflow-hidden rounded-2xl border border-primary/30 bg-surface-light shadow-2xl"
+>
+  <div class="flex items-center justify-between bg-primary px-4 py-3">
+    <span class="font-heading text-sm font-bold text-black">IndraBot</span>
+    <button id="chat-minimize" class="text-black/70 hover:text-black" aria-label="Minimize chat">
+      <i class="fas fa-minus"></i>
+    </button>
+  </div>
+
+  <div
+    id="chat-body"
+    class="flex h-72 flex-col gap-3 overflow-y-auto p-4"
+  >
+    <div class="bot-msg max-w-[85%] self-start rounded-lg rounded-tl-none bg-surface px-3 py-2 text-sm text-text">
+      Hai! Ada yang bisa saya bantu?
+    </div>
+  </div>
+
+  <div class="flex border-t border-primary/20 bg-surface">
+    <input
+      id="chat-input"
+      type="text"
+      placeholder="Tulis pesan..."
+      class="flex-1 bg-transparent px-4 py-3 text-sm text-text outline-none placeholder:text-text-muted"
+    />
+    <button
+      id="chat-send"
+      class="px-4 text-primary transition-colors hover:text-accent"
+      aria-label="Send message"
+    >
+      <i class="fas fa-paper-plane"></i>
+    </button>
+  </div>
+</div>
+
+<script>
+  const toggle = document.getElementById("chat-toggle")!;
+  const widget = document.getElementById("chat-widget")!;
+  const minimize = document.getElementById("chat-minimize")!;
+  const body = document.getElementById("chat-body")!;
+  const input = document.getElementById("chat-input") as HTMLInputElement;
+  const send = document.getElementById("chat-send")!;
+
+  function toggleChat() {
+    widget.classList.toggle("hidden");
+    if (!widget.classList.contains("hidden")) {
+      input.focus();
+    }
+  }
+
+  toggle.addEventListener("click", toggleChat);
+  minimize.addEventListener("click", toggleChat);
+
+  function appendMessage(text: string, isUser: boolean) {
+    const div = document.createElement("div");
+    div.className = isUser
+      ? "max-w-[85%] self-end rounded-lg rounded-tr-none bg-primary/20 px-3 py-2 text-sm text-text"
+      : "bot-msg max-w-[85%] self-start rounded-lg rounded-tl-none bg-surface px-3 py-2 text-sm text-text";
+    div.textContent = text;
+    body.appendChild(div);
+    body.scrollTop = body.scrollHeight;
+  }
+
+  function showTyping(): HTMLElement {
+    const div = document.createElement("div");
+    div.className =
+      "bot-msg max-w-[85%] self-start rounded-lg rounded-tl-none bg-surface px-3 py-2 text-sm text-text-muted animate-pulse";
+    div.textContent = "Mengetik...";
+    body.appendChild(div);
+    body.scrollTop = body.scrollHeight;
+    return div;
+  }
+
+  async function sendMessage() {
+    const text = input.value.trim();
+    if (!text) return;
+
+    appendMessage(text, true);
+    input.value = "";
+
+    const typing = showTyping();
+
+    try {
+      const res = await fetch("/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: text }),
+      });
+      const data = await res.json();
+      typing.remove();
+      appendMessage(data.reply, false);
+    } catch {
+      typing.remove();
+      appendMessage("Maaf, tidak dapat menjawab sekarang.", false);
+    }
+  }
+
+  send.addEventListener("click", sendMessage);
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") sendMessage();
+  });
+</script>

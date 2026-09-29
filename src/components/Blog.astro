@@ -1,0 +1,55 @@
+---
+import { blogPosts, mediumProfileUrl } from "../data/blog";
+---
+
+<section id="blog" class="px-6 py-20 md:px-12">
+  <h2
+    class="mb-12 text-center font-heading text-3xl font-bold text-primary md:text-4xl"
+  >
+    My Blog
+  </h2>
+
+  <div class="mx-auto grid max-w-4xl gap-8 md:grid-cols-2">
+    {
+      blogPosts.map((post) => (
+        <div class="group overflow-hidden rounded-xl border border-primary/20 bg-surface transition-all hover:shadow-[0_0_20px_var(--color-primary)]">
+          <div class="overflow-hidden">
+            <img
+              src={post.image}
+              alt={post.title}
+              class="h-48 w-full object-cover transition-transform duration-300 group-hover:scale-105"
+              loading="lazy"
+            />
+          </div>
+          <div class="p-5">
+            <h3 class="font-heading text-base font-bold text-primary">
+              {post.title}
+            </h3>
+            <p class="mt-2 text-sm leading-relaxed text-text-muted">
+              {post.excerpt}
+            </p>
+            <a
+              href={post.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="mt-4 inline-block rounded border border-primary px-4 py-2 text-sm text-primary transition-shadow hover:shadow-[0_0_10px_var(--color-primary)]"
+            >
+              Read More
+            </a>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+
+  <div class="mt-10 text-center">
+    <a
+      href={mediumProfileUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="rounded-md border-2 border-primary px-8 py-3 font-semibold text-primary transition-shadow hover:shadow-[0_0_15px_var(--color-primary)]"
+    >
+      View All Posts on Medium
+    </a>
+  </div>
+</section>

@@ -1,0 +1,27 @@
+---
+export const prerender = true;
+
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="404 — Page Not Found">
+  <main
+    class="flex min-h-screen flex-col items-center justify-center px-6 text-center"
+  >
+    <h1
+      class="font-heading text-7xl font-bold text-primary [text-shadow:0_0_20px_var(--color-primary)] md:text-9xl"
+    >
+      404
+    </h1>
+    <p class="mt-4 font-mono text-xl text-accent">Page Not Found</p>
+    <p class="mt-2 text-text-muted">
+      The page you're looking for doesn't exist.
+    </p>
+    <a
+      href="/"
+      class="mt-8 rounded-md bg-primary px-6 py-3 font-semibold text-black transition-shadow hover:shadow-[0_0_15px_var(--color-primary)]"
+    >
+      Back to Home
+    </a>
+  </main>
+</BaseLayout>
